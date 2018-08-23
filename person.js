@@ -1,31 +1,74 @@
 // Prototypcal Inheritance
+// myPerson --> Person.prototype --> Object.prototype --> null
 
-const Person = function (firstName, lastName, age, likes = []) {
-    this.firstName = firstName
-    this.lastName = lastName
-    this.age = age
-    this.likes = likes
+class Person {
+    constructor(firstName, lastName, age, likes = []) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.age = age
+        this.likes = likes
+    }
+    getBio() {
+        let bio = `${this.firstName} is ${this.age}`
+
+        this.likes.forEach((like) => {
+            bio += ` ${this.firstName} likes ${like}.`
+        })
+
+        return bio
+    }
+    set fullName(fullName) {
+        const names = fullName.split(' ')
+        this.firstName = names[0]
+        this.lastName = names[1]
+    }
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`
+    }
+
+
 }
 
-Person.prototype.getBio = function() {
-    let bio = `${this.firstName} is ${this.age}`
-    
-    this.likes.forEach((like) => {
-        bio += ` ${this.firstName} likes ${like}.`
-    })
-    
-    return bio
+class Employee extends Person {
+    constructor(firstName, lastName, age, position, likes) {
+        super(firstName, lastName, age, likes)
+        this.position = position
+    }
+    getBio() {
+        return `${this.fullName} is a ${this.position}.`
+        // Andrew is a Teacher
+    }
+    getYearsLeft() {
+        return 65 - this.age
+    }
 }
 
-Person.prototype.setName = function(fullName) {
-    const names = fullName.split(' ')
-    this.firstName = names[0]
-    this.lastName = names[1]
+class Student extends Person {
+    constructor(firstName, lastName, age, grade, likes){ 
+        super(firstName, lastName, age, likes)
+        this.grade = grade
+    }
+    updateGrade(change) {
+        this.grade += change
+    }
+    getBio() {
+        const status = this.grade >= 70 ? 'passing' : 'failing'
+        return `${this.firstName} is ${status} the class`
+    }
 }
 
-const me = new Person('Andrew', 'Mead', 27, ['Teaching', 'Biking'])
-me.setName('Alexis Turner')
+const me = new Employee('Andrew', 'Mead', 27, 'Teacher', [])
+me.fullName = 'Clancey Turner'
 console.log(me.getBio())
 
-const person2 = new Person('Clancey', 'Turner', 51)
-console.log(person2.getBio())
+
+
+// const me = new Employee('Andrew', 'Mead', 27, 'Teacher', ['Teaching', 'Biking'])
+// me.setName('Alexis Turner')
+// console.log(me.getBio())
+// console.log(me.getYearsLeft())
+
+// const person2 = new Person('Clancey', 'Turner', 51)
+
+
+// console.log(person2.getBio())
